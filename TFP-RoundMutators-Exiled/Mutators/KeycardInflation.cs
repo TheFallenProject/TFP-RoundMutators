@@ -10,8 +10,10 @@ namespace TFP_RoundMutators_Exiled.Mutators
 {
     internal class KeycardInflation : IMutator
     {
-        public string Displayname { get; set; } = "<color=orange>Инфляция ключкарт.</color>";
-        public string Description { get; set; } = "У <color=yellow>каждого человека</color> будет <b><color=#59f9e1>карта совета O5</color></b> на спавне.";
+        public string Displayname { get; } = "<color=orange>Инфляция ключкарт.</color>";
+        public string Description { get; } = "У <color=yellow>каждого человека</color> будет <b><color=#59f9e1>карта совета O5</color></b> на спавне.";
+
+        public bool IsUnsafe => false;
 
         public void Disengaged()
         {

@@ -61,11 +61,33 @@ namespace TFP_RoundMutators
                 Type mut;
                 Type[] types = GetTypesInNamespace(Assembly.GetExecutingAssembly(), "TFP_RoundMutators_Exiled.Mutators");
                 object refereceObject = null;
-                bool allClear = false; ;
+                bool allClear = false; 
+                bool breakLoopIns = false;
+                if (UnityEngine.Random.Range(0, 11) < 6 && overridenMutator == "")
+                {
+                    breakLoopIns = true;
+                    Exiled.API.Features.Map.ClearBroadcasts();
+                    Exiled.API.Features.Map.Broadcast(20, $"Был запущен мутатор <b>Обычный раунд</b>\n<size=20><color=gray>Мутатор не был выбран</color></size>", Broadcast.BroadcastFlags.Normal, true);
+                }
+                int TTL = 500;
                 while (true)
                 {
+                    TTL--;
+                    if (TTL <= 0)
+                    {
+                        Exiled.API.Features.Map.ClearBroadcasts();
+                        Exiled.API.Features.Map.Broadcast(10, "Количество попыток запуска мутатора иссякло. Мутатор не был выбран.", Broadcast.BroadcastFlags.Normal, true);
+                        return;
+                    }
                     int randsel = UnityEngine.Random.Range(0, types.Length - 1);
                     mut = types[randsel];
+                    if (breakLoopIns)
+                    {
+                        break;
+                    }
+                    allClear = false;
+                    
+                    
                     if (overridenMutator != "")
                     {
                         mut = types.First(mutPred => mutPred.Name == overridenMutator);
@@ -74,6 +96,16 @@ namespace TFP_RoundMutators
                     if (!mut.Name.Contains("<") && !mut.Name.Contains(">"))
                     {
                         refereceObject = Activator.CreateInstance(mut);
+                        bool isSafe = false;
+                        if ((bool)mut.GetProperty("IsUnsafe").GetValue(refereceObject) && !JOJO.UnsafeMode) //This is an explicit bool conversion. If it is not bool, r/funny exception will be raised!
+                        {
+                            Exiled.API.Features.Log.Warn($"Mutator is unsafe. Config is against it! Mutator is {((bool)mut.GetProperty("IsUnsafe").GetValue(refereceObject) && !JOJO.UnsafeMode ? "Unsafe" : "Safe")} Config is {(JOJO.UnsafeMode ? "Against unsafe mutators" : "Fine with unsafe mutators")}");
+                        }
+                        else
+                        {
+                            Exiled.API.Features.Log.Info($"Mutator is safe or Config has accepted unsafe mutators! Mutator is {((bool)mut.GetProperty("IsUnsafe").GetValue(refereceObject) && !JOJO.UnsafeMode ? "Unsafe" : "Safe")} Config is {(JOJO.UnsafeMode ? "Against unsafe mutators" : "Fine with unsafe mutators")}");
+                            isSafe = true;
+                        }
                         var DoWantEngage = mut.GetMethod("DoIWantToEngage");
                         object response;
                         if (DoWantEngage == null)
@@ -84,10 +116,14 @@ namespace TFP_RoundMutators
                         {
                             response = DoWantEngage.Invoke(refereceObject, null);
                         }
-                        if (response.Equals(true) && response != null)
+                        if (response.Equals(true) && !(response is null) && (isSafe || overridenMutator != ""))
                         {
                             Exiled.API.Features.Log.Info("Yup, all clear! Engaging selected mutator!");
                             allClear = true;
+                        }
+                        else if (!isSafe)
+                        {
+                            Exiled.API.Features.Log.Warn("Selected mutator is unsafe and config is against it!");
                         }
                         else if (response == null)
                         {
@@ -103,7 +139,7 @@ namespace TFP_RoundMutators
                     {
                         Exiled.API.Features.Log.Warn("<>c was found in mutator's name. THIS IS AN ISSUE, RETRYING...");
                     }
-                    if (!mut.Name.Contains("<>c") && allClear)
+                    if (allClear)
                     {
                         break;
                     }

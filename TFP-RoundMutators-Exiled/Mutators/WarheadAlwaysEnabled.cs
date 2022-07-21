@@ -11,8 +11,9 @@ namespace TFP_RoundMutators_Exiled.Mutators
 {
     internal class WarheadAlwaysEnabled : IMutator
     {
-        public string Displayname { get; set; } = "<color=orange>Боеголовку заело.</color>";
-        public string Description { get; set; } = "<color=red>Боеголовка</color> всегда <color=green>включена</color> и её <color=red>нельзя отключить</color> во время детонации!";
+        public string Displayname { get; } = "<color=orange>Боеголовку заело.</color>";
+        public string Description { get; } = "<color=red>Боеголовка</color> всегда <color=green>включена</color> и её <color=red>нельзя отключить</color> во время детонации!";
+        public bool IsUnsafe => false;
 
         public void Disengaged()
         {

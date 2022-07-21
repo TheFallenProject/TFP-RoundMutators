@@ -10,8 +10,9 @@ namespace TFP_RoundMutators_Exiled.Mutators
 {
     internal class AssaultMoment : IMutator
     {
-        public string Displayname { get; set; } = "<color=orange>Ох уж эти туториалы!</color>";
-        public string Description { get; set; } = "В случае респавна MTF или Хаоса приедут туториалы. Они нейтральны ко всем.";
+        public string Displayname { get; } = "<color=orange>Ох уж эти туториалы!</color>";
+        public string Description { get; } = "В случае респавна MTF или Хаоса приедут туториалы. Они нейтральны ко всем.";
+        public bool IsUnsafe { get; } = false;
 
         public void Disengaged()
         {
@@ -38,7 +39,6 @@ namespace TFP_RoundMutators_Exiled.Mutators
                 if (pl.Role.Type == RoleType.Spectator)
                 {
                     pl.SetRole(RoleType.Tutorial, Exiled.API.Enums.SpawnReason.Revived);
-                    pl.EnableEffect(new CustomPlayerEffects.Flashed(), 3);
                     Timing.CallDelayed(3f, () => {
                         pl.Position = new UnityEngine.Vector3(86.7f, 988.5f, -68.0f);
 

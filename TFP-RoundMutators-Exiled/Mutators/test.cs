@@ -8,8 +8,10 @@ namespace TFP_RoundMutators_Exiled.Mutators
 {
     internal class test : TFP_RoundMutators_Exiled.Interfaces.IMutator
     {
-        public string Displayname { get; set; } = "<color=white>Тествовый мутатор</color>";
-        public string Description { get; set; } = "Это тестовый мутатор";
+        public string Displayname { get; } = "<color=white>Тествовый мутатор</color>";
+        public string Description { get; } = "Это тестовый мутатор";
+
+        public bool IsUnsafe => true;
 
         public void Disengaged()
         {

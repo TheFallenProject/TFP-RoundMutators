@@ -10,8 +10,11 @@ namespace TFP_RoundMutators_Exiled.Mutators
 {
     internal class TheFallOfTheFacility : IMutator
     {
-        public string Displayname { get; set; } = "<color=orange>Перебои в работе комплекса.</color>";
-        public string Description { get; set; } = "Системы комплекса <color=red>отказывают</color>. <color=blue>Двери</color> <color=yellow>открываются и закрываются</color> сами по себе, <color=blue>свет</color> <color=yellow>выключается</color> сам по себе. Запуск генераторов <color=green>может ослабить</color> неисправности комплекса.";
+        public string Displayname { get; } = "<color=orange>Перебои в работе комплекса.</color>";
+        public string Description { get; } = "Системы комплекса <color=red>отказывают</color>. <color=blue>Двери</color> <color=yellow>открываются и закрываются</color> сами по себе, <color=blue>свет</color> <color=yellow>выключается</color> сам по себе. Запуск генераторов <color=green>может ослабить</color> неисправности комплекса.";
+
+        public bool IsUnsafe => false;
+
         public void Engaged()
         {
             Timing.RunCoroutine(LightFailure(), "lights");
