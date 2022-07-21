@@ -21,7 +21,7 @@ namespace TFP_RoundMutators.Commands
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            response = String.Empty;
+            response = "Mutators: ";
             Type[] types = GetTypesInNamespace(Assembly.GetExecutingAssembly(), "TFP_RoundMutators_Exiled.Mutators");
             foreach (var type in types)
             {

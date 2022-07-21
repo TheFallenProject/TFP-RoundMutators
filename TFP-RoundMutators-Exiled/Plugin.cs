@@ -62,6 +62,11 @@ namespace TFP_RoundMutators
                 Type[] types = GetTypesInNamespace(Assembly.GetExecutingAssembly(), "TFP_RoundMutators_Exiled.Mutators");
                 object refereceObject = null;
                 bool allClear = false; ;
+                if (UnityEngine.Random.Range(0, 11) < 6)
+                {
+                    Exiled.API.Features.Map.ClearBroadcasts();
+                    Exiled.API.Features.Map.Broadcast(20, $"Был запущен мутатор <b>Обычный раунд</b>\n<size=20><color=gray>Мутатор не был выбран</color></size>", Broadcast.BroadcastFlags.Normal, true);
+                }
                 while (true)
                 {
                     int randsel = UnityEngine.Random.Range(0, types.Length - 1);
@@ -74,6 +79,15 @@ namespace TFP_RoundMutators
                     if (!mut.Name.Contains("<") && !mut.Name.Contains(">"))
                     {
                         refereceObject = Activator.CreateInstance(mut);
+                        bool isSafe = false;
+                        if ((bool)mut.GetField("IsUnsafe").GetValue(refereceObject) && !JOJO.UnsafeMode) //This is an explicit bool conversion. If it is not bool, r/funny exception will be raised!
+                        {
+                            Exiled.API.Features.Log.Warn("Mutator is unsafe. Config is against it!");
+                        }
+                        else
+                        {
+                            isSafe = true;
+                        }
                         var DoWantEngage = mut.GetMethod("DoIWantToEngage");
                         object response;
                         if (DoWantEngage == null)
@@ -84,10 +98,14 @@ namespace TFP_RoundMutators
                         {
                             response = DoWantEngage.Invoke(refereceObject, null);
                         }
-                        if (response.Equals(true) && response != null)
+                        if (response.Equals(true) && !(response is null) && isSafe)
                         {
                             Exiled.API.Features.Log.Info("Yup, all clear! Engaging selected mutator!");
                             allClear = true;
+                        }
+                        else if (!isSafe)
+                        {
+                            Exiled.API.Features.Log.Warn("Selected mutator is unsafe and config is against it!");
                         }
                         else if (response == null)
                         {

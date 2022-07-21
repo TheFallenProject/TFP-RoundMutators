@@ -10,8 +10,9 @@ namespace TFP_RoundMutators_Exiled.Mutators
 {
     internal class AssaultMoment : IMutator
     {
-        public string Displayname { get; set; } = "<color=orange>Ох уж эти туториалы!</color>";
-        public string Description { get; set; } = "В случае респавна MTF или Хаоса приедут туториалы. Они нейтральны ко всем.";
+        public string Displayname { get; } = "<color=orange>Ох уж эти туториалы!</color>";
+        public string Description { get; } = "В случае респавна MTF или Хаоса приедут туториалы. Они нейтральны ко всем.";
+        public bool IsUnsafe { get; } = true;
 
         public void Disengaged()
         {

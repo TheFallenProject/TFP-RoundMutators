@@ -11,12 +11,17 @@ namespace TFP_RoundMutators_Exiled.Interfaces
         /// <summary>
         /// Это название отображается в начале раунда
         /// </summary>
-        string Displayname { get; set; }
+        string Displayname { get; }
 
         /// <summary>
-        /// Это описание отоброжается в начале раунда
+        /// Это описание отображается в начале раунда
         /// </summary>
-        string Description { get; set; }
+        string Description { get; }
+
+        /// <summary>
+        /// Is mutator unsafe? (Can it break something?)
+        /// </summary>
+        bool IsUnsafe { get; }
 
         /// <summary>
         /// Этот метод вызывается, когда мутатор был выбран И вернул true в DoIWantToEngage

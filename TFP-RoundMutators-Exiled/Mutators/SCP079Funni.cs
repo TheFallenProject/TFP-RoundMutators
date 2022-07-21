@@ -20,8 +20,10 @@ namespace TFP_RoundMutators_Exiled.Mutators
     {
         List<int> GensImmunityTemp = new List<int>();
 
-        public string Displayname { get; set; } = "<color=orange>4 гига, 4 ядра, игровая видеокарта</color>";
-        public string Description { get; set; } = "У <color=red>SCP-079</color> <color=green><b>ЭНЕРГИЯ БЕСКОНЕЧНА</b></color> <color=grey>(однако блокировка дверей всё ещё будет расходовать её)</color>, но <color=red>все генераторы запускаются за 40 секунд</color>. <color=grey>(к слову, комп есть =))</color>";
+        public string Displayname { get; } = "<color=orange>4 гига, 4 ядра, игровая видеокарта</color>";
+        public string Description { get; } = "У <color=red>SCP-079</color> <color=green><b>ЭНЕРГИЯ БЕСКОНЕЧНА</b></color> <color=grey>(однако блокировка дверей всё ещё будет расходовать её)</color>, но <color=red>все генераторы запускаются за 40 секунд</color>. <color=grey>(к слову, комп есть =))</color>";
+
+        public bool IsUnsafe => false;
 
         public void Disengaged()
         {

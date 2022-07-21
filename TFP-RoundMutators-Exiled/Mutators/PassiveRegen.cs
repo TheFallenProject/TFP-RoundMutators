@@ -10,8 +10,10 @@ namespace TFP_RoundMutators_Exiled.Mutators
 {
     internal class PassiveRegen : IMutator
     {
-        public string Displayname { get; set; } = "<color=green>Пассивная регенерация</color>";
-        public string Description { get; set; } = "У <color=yellow>всех людей</color> хп <color=green>будет восстанавливаться</color> по <color=yellow>2 хп/секунду</color>";
+        public string Displayname { get; } = "<color=green>Пассивная регенерация</color>";
+        public string Description { get; } = "У <color=yellow>всех людей</color> хп <color=green>будет восстанавливаться</color> по <color=yellow>2 хп/секунду</color>";
+
+        public bool IsUnsafe => false;
 
         public void Disengaged()
         {
