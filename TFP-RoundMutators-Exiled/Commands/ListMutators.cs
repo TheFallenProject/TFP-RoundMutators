@@ -21,12 +21,19 @@ namespace TFP_RoundMutators.Commands
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            response = "Mutators: ";
+            response = "Mutators: \n";
             Type[] types = GetTypesInNamespace(Assembly.GetExecutingAssembly(), "TFP_RoundMutators_Exiled.Mutators");
             foreach (var type in types)
             {
-                var refer = Activator.CreateInstance(type);
-                response += $"<b><color=yellow>{type.Name}</color></b> <= {type.GetField("Displayname").GetValue(refer)}\n";
+                if (type.GetProperty("Displayname") != null)
+                {
+                    var refer = Activator.CreateInstance(type);
+                    response += $"<b>{((bool)type.GetProperty("IsUnsafe").GetValue(refer) ? "<color=red>[UNSAFE] </color>" : "<color=green>[SAFE] </color>")}<color=yellow>{type.Name}</color></b> <= {type.GetProperty("Displayname").GetValue(refer)}\n";
+                }
+                else
+                {
+                    response += $"<b><color=red>[INVALID] {type.Name}</color></b>\n";
+                }
             }
             return true;
         }
